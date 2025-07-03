@@ -1,14 +1,14 @@
 [
   {"participantId": "p1", "firstPlace": "Frankrike", "secondPlace": "Spanien"},
-  {"participantId": "p2", "firstPlace": "Spanien", "secondPlace": "Tyskland"},
-  {"participantId": "p3", "firstPlace": "Tyskland", "secondPlace": "Spanien"},
+  {"participantId": "p2", "firstPlace": "Tyskland", "secondPlace": "Spanien"},
+  {"participantId": "p3", "firstPlace": "Spanien", "secondPlace": "England"},
   {"participantId": "p4", "firstPlace": "Frankrike", "secondPlace": "Sverige"},
   {"participantId": "p5", "firstPlace": "Sverige", "secondPlace": "Tyskland"},
-  {"participantId": "p6", "firstPlace": "England", "secondPlace": "Frankrike"},
-  {"participantId": "p7", "firstPlace": "Frankrike", "secondPlace": "Sverige"},
+  {"participantId": "p6", "firstPlace": "Spanien", "secondPlace": "Frankrike"},
+  {"participantId": "p7", "firstPlace": "Spanien", "secondPlace": "Sverige"},
   {"participantId": "p8", "firstPlace": "Sverige", "secondPlace": "Spanien"},
   {"participantId": "p9", "firstPlace": "Spanien", "secondPlace": "Sverige"},
   {"participantId": "p10", "firstPlace": "Spanien", "secondPlace": "Frankrike"},
   {"participantId": "p11", "firstPlace": "Sverige", "secondPlace": "England"},
-  {"participantId": "p12", "firstPlace": "Sverige", "secondPlace": "Spanien"}
+  {"participantId": "p12", "firstPlace": "Spanien", "secondPlace": "Sverige"}
 ]
