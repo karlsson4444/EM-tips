@@ -176,21 +176,6 @@ function Leaderboard({ data }) {
     );
 }
 
-function AdminInfo() {
-    return (
-        <div className="bg-gray-800 p-6 rounded-xl shadow-lg">
-            <h2 className="text-2xl font-bold text-white mb-4">Hur uppdaterar jag resultat?</h2>
-            <p className="text-gray-300">
-                Resultat uppdateras genom att ändra i filen <code className="bg-gray-900 text-cyan-400 px-1 py-0.5 rounded">public/data/results.json</code>.
-            </p>
-            <p className="text-gray-300 mt-2">
-                Efter att du har publicerat om sidan via GitHub/Vercel kommer topplistan att uppdateras.
-            </p>
-        </div>
-    );
-}
-
-
 function MatchList({ matches, bets, participants }) {
     const [expandedMatchId, setExpandedMatchId] = useState(null);
     const [visibleCount, setVisibleCount] = useState(5);
@@ -244,7 +229,8 @@ function MatchList({ matches, bets, participants }) {
                                             day: 'numeric',
                                             month: 'short',
                                             hour: '2-digit',
-                                            minute: '2-digit'
+                                            minute: '2-digit',
+                                            timeZone: 'UTC'
                                         })}
                                     </p>
                                 )}
