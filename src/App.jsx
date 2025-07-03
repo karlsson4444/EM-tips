@@ -17,6 +17,7 @@ export default function App() {
     const [participants, setParticipants] = useState([]);
     const [matches, setMatches] = useState([]);
     const [bets, setBets] = useState([]);
+    const [finalPicks, setFinalPicks] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
@@ -29,21 +30,27 @@ export default function App() {
                     '/data/participants.json',
                     '/data/matches.json',
                     '/data/bets.json',
-                    '/data/results.json'
+                    '/data/results.json',
+                    '/data/finalPicks.json'
                 ];
 
                 const responses = await Promise.all(
-                    dataPaths.map(path => fetch(path))
+                    dataPaths.map(path => fetch(path).catch(e => {
+                        // Gör det möjligt för finalPicks att vara valfri
+                        if (path.includes('finalPicks')) return null;
+                        throw e;
+                    }))
                 );
-
-                for (const res of responses) {
+                
+                const validResponses = responses.filter(Boolean);
+                for (const res of validResponses) {
                     if (!res.ok) {
                         throw new Error(`Kunde inte ladda datafil: ${res.url}. Status: ${res.status}`);
                     }
                 }
                 
-                const [participantsData, matchesData, betsData, resultsData] = await Promise.all(
-                    responses.map(res => res.json())
+                const [participantsData, matchesData, betsData, resultsData, finalPicksData] = await Promise.all(
+                    responses.map(res => res ? res.json() : null)
                 );
 
                 // Slå ihop matchdata med resultatdata
@@ -63,6 +70,7 @@ export default function App() {
                 setParticipants(participantsData);
                 setMatches(matchesWithResults.sort((a, b) => new Date(a.matchDate) - new Date(b.matchDate)));
                 setBets(betsData);
+                if(finalPicksData) setFinalPicks(finalPicksData);
 
             } catch (err) {
                 console.error("Fel vid laddning av data:", err);
@@ -128,11 +136,23 @@ export default function App() {
             <div className="max-w-7xl mx-auto">
                 <Header />
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-8">
+                    {/* Kolumn 1 för desktop */}
                     <div className="lg:col-span-1 space-y-8">
                         <Leaderboard data={leaderboardData} />
+                        {/* Finaltips visas här ENDAST på desktop */}
+                        <div className="hidden lg:block">
+                            {finalPicks.length > 0 && <FinalPicksDisplay finalPicks={finalPicks} participants={participants} />}
+                        </div>
                     </div>
+
+                    {/* Kolumn 2 för desktop */}
                     <div className="lg:col-span-2">
                         <MatchList matches={matches} bets={bets} participants={participants} />
+                    </div>
+
+                    {/* Finaltips visas här som sista element ENDAST på mobil */}
+                    <div className="lg:hidden mt-8">
+                        {finalPicks.length > 0 && <FinalPicksDisplay finalPicks={finalPicks} participants={participants} />}
                     </div>
                 </div>
             </div>
@@ -172,6 +192,37 @@ function Leaderboard({ data }) {
                     </li>
                 ))}
             </ul>
+        </div>
+    );
+}
+
+function FinalPicksDisplay({ finalPicks, participants }) {
+    return (
+        <div className="bg-gray-800 p-6 rounded-xl shadow-lg">
+            <h2 className="text-2xl font-bold text-white mb-4">Finaltips</h2>
+            <div className="overflow-x-auto">
+                <table className="w-full text-left text-sm">
+                    <thead className="border-b border-gray-600 text-gray-400">
+                        <tr>
+                            <th className="py-2 pr-2">Deltagare</th>
+                            <th className="py-2 pr-2">Vinnare</th>
+                            <th className="py-2">Tvåa</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {participants.map(participant => {
+                            const pick = finalPicks.find(p => p.participantId === participant.id);
+                            return (
+                                <tr key={participant.id} className="border-b border-gray-700/50">
+                                    <td className="py-2 pr-2 font-medium">{participant.name}</td>
+                                    <td className="py-2 pr-2">{pick ? pick.firstPlace : '-'}</td>
+                                    <td className="py-2">{pick ? pick.secondPlace : '-'}</td>
+                                </tr>
+                            );
+                        })}
+                    </tbody>
+                </table>
+            </div>
         </div>
     );
 }
@@ -217,7 +268,7 @@ function MatchList({ matches, bets, participants }) {
                         <button onClick={() => toggleExpand(match.id)} className="w-full p-4 text-left flex justify-between items-center hover:bg-gray-700 transition-colors">
                             <div className="flex-1 min-w-0 mr-4">
                                 <p className="text-xs text-gray-400">{match.group}</p>
-                                <p className="font-bold text-lg whitespace-nowrap overflow-hidden text-ellipsis">{match.homeTeam} - {match.awayTeam}</p>
+                                <p className="font-bold text-base md:text-lg">{match.homeTeam} - {match.awayTeam}</p>
                             </div>
                             <div className="flex items-center gap-4">
                                 {match.status === 'FINISHED' ? (
@@ -225,7 +276,6 @@ function MatchList({ matches, bets, participants }) {
                                 ) : (
                                     <p className="text-sm font-semibold text-gray-400 text-right">
                                         {new Date(match.matchDate).toLocaleString('sv-SE', {
-                                            weekday: 'short',
                                             day: 'numeric',
                                             month: 'short',
                                             hour: '2-digit',
