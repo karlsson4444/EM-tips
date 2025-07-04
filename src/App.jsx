@@ -139,7 +139,6 @@ export default function App() {
                         <div className="hidden lg:block">
                             {finalPicks.length > 0 && <FinalPicksDisplay finalPicks={finalPicks} participants={participants} />}
                         </div>
-                        <AdminInfo />
                     </div>
                     <div className="lg:col-span-2">
                         <MatchList matches={matches} bets={bets} participants={participants} />
