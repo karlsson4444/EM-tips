@@ -2,6 +2,6 @@
   {"matchId": "m1", "actualHomeScore": 0, "actualAwayScore": 1},
   {"matchId": "m2", "actualHomeScore": 1, "actualAwayScore": 2},
   {"matchId": "m3", "actualHomeScore": 0, "actualAwayScore": 1},
-  {"matchId": "m3", "actualHomeScore": 5, "actualAwayScore": 0},
-  {"matchId": "m3", "actualHomeScore": 0, "actualAwayScore": 1}
+  {"matchId": "m4", "actualHomeScore": 5, "actualAwayScore": 0},
+  {"matchId": "m5", "actualHomeScore": 0, "actualAwayScore": 1}
 ]
