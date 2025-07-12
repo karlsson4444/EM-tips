@@ -12,10 +12,5 @@
   {"matchId": "m11", "actualHomeScore": 6, "actualAwayScore": 2},
   {"matchId": "m12", "actualHomeScore": 1, "actualAwayScore": 1},
   {"matchId": "m13", "actualHomeScore": 2, "actualAwayScore": 1},
-  {"matchId": "m14", "actualHomeScore": 0, "actualAwayScore": 3},
-  {"matchId": "m15", "actualHomeScore": 1, "actualAwayScore": 1},
-  {"matchId": "m16", "actualHomeScore": 4, "actualAwayScore": 3},
-  {"matchId": "m17", "actualHomeScore": 1, "actualAwayScore": 3},
-  {"matchId": "m18", "actualHomeScore": 1, "actualAwayScore": 2}
-  
+  {"matchId": "m14", "actualHomeScore": 0, "actualAwayScore": 3}
 ]
