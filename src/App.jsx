@@ -117,7 +117,28 @@ export default function App() {
                 }
             });
         });
-        
+        if (finalPicks.length > 0) {
+            finalPicks.forEach(pick =>{
+                const participantScore = scores.find(s => s.id === pick.participantId);
+                if (!participantScore) return;
+ 
+                const first = pick.firstPlace;
+                const second = pick.secondPlace;
+ 
+                if (first === 'England' && second === 'Spanien') {
+                    participantScore.points += 3;
+                }
+                else if (first === 'Spanien' && second === 'England') {
+                    participantScore.points += 2;
+                }
+                else if (first === 'Spanien', 'England' && second != 'Spanien', 'England') {
+                    participantScore.points += 1;
+                }
+                else if (second === 'Spanien', 'England' && first != 'Spanien', 'England') {
+                    participantScore.points += 1;
+                }
+            });
+        }
         return scores.sort((a, b) => b.points - a.points);
     }, [participants, matches, bets]);
 
